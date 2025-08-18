@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
-import { Person } from './person.entity';
-import { Role } from './role.entity';
+import { Trabajador } from './trabajador.entity';
+import { Roles } from './roles.entity';
 
 @Entity('users')
-export class User {
+export class Usuario {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -35,11 +35,11 @@ export class User {
   updatedAt: Date;
 
   // Relaciones
-  @OneToOne(() => Person, person => person.user)
+  @OneToOne(() => Trabajador, person => person.user)
   @JoinColumn({ name: 'person_id' })
-  person: Person;
+  person: Trabajador;
 
-  @ManyToOne(() => Role, role => role.users)
+  @ManyToOne(() => Roles, role => role.users)
   @JoinColumn({ name: 'role_id' })
-  role: Role;
+  role: Roles;
 }

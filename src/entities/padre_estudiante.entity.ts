@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, Unique } from 'typeorm';
-import { Person } from './person.entity';
-import { Student } from './student.entity';
+import { Trabajador } from './trabajador.entity';
+import { Estudiante } from './estudiante.entity';
 
-@Entity('parent_student')
+@Entity('padres_estudiante')
 @Unique(['parentId', 'studentId', 'relationshipType'])
-export class ParentStudent {
+export class PadresEstudiantes {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,11 +14,11 @@ export class ParentStudent {
   @Column({ name: 'student_id' })
   studentId: number;
 
-  @Column({ 
-    name: 'relationship_type', 
-    type: 'varchar', 
-    length: 20, 
-    default: 'padre' 
+  @Column({
+    name: 'relationship_type',
+    type: 'varchar',
+    length: 20,
+    default: 'padre'
   })
   relationshipType: 'padre' | 'madre' | 'tutor' | 'abuelo' | 'tio' | 'otro';
 
@@ -32,11 +32,11 @@ export class ParentStudent {
   createdAt: Date;
 
   // Relaciones
-  @ManyToOne(() => Person, person => person.children)
+  @ManyToOne(() => Trabajador, person => person.children)
   @JoinColumn({ name: 'parent_id' })
-  parent: Person;
+  parent: Trabajador;
 
-  @ManyToOne(() => Student, student => student.parents)
+  @ManyToOne(() => Estudiante, student => student.parents)
   @JoinColumn({ name: 'student_id' })
-  student: Student;
+  student: Estudiante;
 }

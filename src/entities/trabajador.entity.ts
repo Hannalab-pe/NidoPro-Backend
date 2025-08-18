@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, OneToMany } from 'typeorm';
-import { User } from './user.entity';
-import { Student } from './student.entity';
-import { ParentStudent } from './parent-student.entity';
+import { Usuario } from './usuario.entity';
+import { Estudiante } from './estudiante.entity';
+import { PadresEstudiantes } from './padre_Estudiante.entity';
 
-@Entity('persons')
-export class Person {
+@Entity('trabajador')
+export class Trabajador {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -51,12 +51,12 @@ export class Person {
   updatedAt: Date;
 
   // Relaciones
-  @OneToOne(() => User, user => user.person)
-  user: User;
+  @OneToOne(() => Usuario, user => user.person)
+  user: Usuario;
 
-  @OneToOne(() => Student, student => student.person)
-  student: Student;
+  @OneToOne(() => Estudiante, student => student.person)
+  student: Estudiante;
 
-  @OneToMany(() => ParentStudent, parentStudent => parentStudent.parent)
-  children: ParentStudent[];
+  @OneToMany(() => PadresEstudiantes, parentStudent => parentStudent.parent)
+  children: PadresEstudiantes[];
 }

@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { Person } from './person.entity';
-import { Grade } from './grade.entity';
-import { ParentStudent } from './parent-student.entity';
+import { Trabajador } from './trabajador.entity';
+import { Grado } from './grado.entity';
+import { PadresEstudiantes } from './padre_Estudiante.entity';
 
-@Entity('students')
-export class Student {
+@Entity('estudiante')
+export class Estudiante {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,10 +20,10 @@ export class Student {
   @Column({ name: 'enrollment_date', type: 'date', default: () => 'CURRENT_DATE' })
   enrollmentDate: Date;
 
-  @Column({ 
-    type: 'varchar', 
-    length: 20, 
-    default: 'active' 
+  @Column({
+    type: 'varchar',
+    length: 20,
+    default: 'active'
   })
   status: 'active' | 'inactive' | 'transferred' | 'graduated';
 
@@ -40,14 +40,14 @@ export class Student {
   updatedAt: Date;
 
   // Relaciones
-  @OneToOne(() => Person, person => person.student)
+  @OneToOne(() => Trabajador, person => person.student)
   @JoinColumn({ name: 'person_id' })
-  person: Person;
+  person: Trabajador;
 
-  @ManyToOne(() => Grade, grade => grade.students)
+  @ManyToOne(() => Grado, grade => grade.students)
   @JoinColumn({ name: 'grade_id' })
-  grade: Grade;
+  grade: Grado;
 
-  @OneToMany(() => ParentStudent, parentStudent => parentStudent.student)
-  parents: ParentStudent[];
+  @OneToMany(() => PadresEstudiantes, parentStudent => parentStudent.student)
+  parents: PadresEstudiantes[];
 }
