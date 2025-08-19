@@ -1,41 +1,41 @@
 import {
+  Column,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
 } from "typeorm";
-import { Actividad } from "./actividad.entity";
+import { Actividades } from "./actividades.entity";
 import { Asistencia } from "./asistencia.entity";
 import { Grado } from "./grado.entity";
 import { Trabajador } from "./trabajador.entity";
 import { Curso } from "./curso.entity";
-import { Matricula } from "./matricula.entity";
 
 @Index("aula_pkey", ["idAula"], { unique: true })
 @Entity("aula", { schema: "public" })
 export class Aula {
-  @PrimaryGeneratedColumn('uuid', { name: "id_aula" })
+  @Column("uuid", {
+    primary: true,
+    name: "id_aula",
+    default: () => "uuid_generate_v4()",
+  })
   idAula: string;
 
-  @OneToMany(() => Actividad, (actividad) => actividad.idAula)
-  actividads: Actividad[];
+  @OneToMany(() => Actividades, (actividades) => actividades.aula)
+  actividades: Actividades[];
 
-  @OneToMany(() => Asistencia, (asistencia) => asistencia.idAula)
+  @OneToMany(() => Asistencia, (asistencia) => asistencia.aula)
   asistencias: Asistencia[];
 
   @ManyToOne(() => Grado, (grado) => grado.aulas)
-  @JoinColumn([{ name: "id_grado", referencedColumnName: "idGrado" }])
+  @JoinColumn([{ name: "id_grado", referencedColumnName: "idgrado" }])
   idGrado: Grado;
 
   @ManyToOne(() => Trabajador, (trabajador) => trabajador.aulas)
-  @JoinColumn([{ name: "id_trabajador", referencedColumnName: "idTrabajador" }])
+  @JoinColumn([{ name: "id_trabajador", referencedColumnName: "idtrabajador" }])
   idTrabajador: Trabajador;
 
   @OneToMany(() => Curso, (curso) => curso.idAula)
   cursos: Curso[];
-
-  @OneToMany(() => Matricula, (matricula) => matricula.idAula)
-  matriculas: Matricula[];
 }

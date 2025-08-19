@@ -1,26 +1,21 @@
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { Usuario } from "./usuario.entity";
+import { Column, Entity, Index, OneToMany } from "typeorm";
+import { Trabajador } from "./trabajador.entity";
 
 @Index("rol_pkey", ["idrol"], { unique: true })
 @Entity("rol", { schema: "public" })
 export class Rol {
-  @PrimaryGeneratedColumn('uuid',{ name: "idrol" })
+  @Column("uuid", {
+    primary: true,
+    name: "idrol",
+    default: () => "uuid_generate_v4()",
+  })
   idrol: string;
 
-  @Column("character varying", { name: "nombre", length: 50 })
+  @Column("character varying", { name: "nombre", length: 100 })
   nombre: string;
 
   @Column("text", { name: "descripcion", nullable: true })
   descripcion: string | null;
-
-  @Column({name: "isActive"})
-  isActive: boolean;
 
   @Column("timestamp without time zone", {
     name: "creado",
@@ -36,6 +31,13 @@ export class Rol {
   })
   actualizado: Date | null;
 
-  @OneToMany(() => Usuario, (usuario) => usuario.idrol)
-  usuarios: Usuario[];
+  @Column("boolean", {
+    name: "isactive",
+    nullable: true,
+    default: () => "true",
+  })
+  isactive: boolean | null;
+
+  @OneToMany(() => Trabajador, (trabajador) => trabajador.idrol)
+  trabajadors: Trabajador[];
 }

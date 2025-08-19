@@ -1,38 +1,32 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { Estudiante } from "./estudiante.entity";
-import { TipoAnotacion } from "./tipo-anotacion.entity";
 import { Trabajador } from "./trabajador.entity";
 
-@Index("anotacion_pkey", ["idAnotacion"], { unique: true })
-@Entity("anotacion", { schema: "public" })
-export class Anotacion {
-  @PrimaryGeneratedColumn('uuid',{ name: "id_anotacion" })
+@Index("anotaciones_pkey", ["idAnotacion"], { unique: true })
+@Entity("anotaciones", { schema: "public" })
+export class Anotaciones {
+  @Column("uuid", {
+    primary: true,
+    name: "id_anotacion",
+    default: () => "uuid_generate_v4()",
+  })
   idAnotacion: string;
 
-  @Column("text", { name: "descripcion", nullable: true })
-  descripcion: string | null;
+  @Column("text", { name: "descripcion_anotacion", nullable: true })
+  descripcionAnotacion: string | null;
 
-  @Column("date", { name: "fecha_registro", nullable: true })
-  fechaRegistro: string | null;
+  @Column("timestamp without time zone", {
+    name: "fecha_registro",
+    nullable: true,
+    default: () => "now()",
+  })
+  fechaRegistro: Date | null;
 
-  @ManyToOne(() => Estudiante, (estudiante) => estudiante.anotacions)
+  @ManyToOne(() => Estudiante, (estudiante) => estudiante.anotaciones)
   @JoinColumn([{ name: "id_estudiante", referencedColumnName: "idEstudiante" }])
   idEstudiante: Estudiante;
 
-  @ManyToOne(() => TipoAnotacion, (tipoAnotacion) => tipoAnotacion.anotacions)
-  @JoinColumn([
-    { name: "id_tipo_anotacion", referencedColumnName: "idTipoAnotacion" },
-  ])
-  idTipoAnotacion: TipoAnotacion;
-
-  @ManyToOne(() => Trabajador, (trabajador) => trabajador.anotacions)
-  @JoinColumn([{ name: "id_trabajador", referencedColumnName: "idTrabajador" }])
+  @ManyToOne(() => Trabajador, (trabajador) => trabajador.anotaciones)
+  @JoinColumn([{ name: "id_trabajador", referencedColumnName: "idtrabajador" }])
   idTrabajador: Trabajador;
 }

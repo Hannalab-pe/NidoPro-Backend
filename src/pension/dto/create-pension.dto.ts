@@ -1,14 +1,9 @@
-import { IsString, IsOptional, MaxLength, IsNumberString, IsDateString } from 'class-validator';
+import { IsOptional, IsNumberString, IsDateString } from 'class-validator';
 
 export class CreatePensionDto {
     @IsOptional()
-    @IsString()
-    @MaxLength(50)
-    tipoPago?: string;
-
-    @IsOptional()
     @IsNumberString()
-    monto?: string;
+    montoPension?: string;
 
     @IsOptional()
     @IsDateString()
@@ -17,15 +12,4 @@ export class CreatePensionDto {
     @IsOptional()
     @IsDateString()
     fechaPago?: string;
-
-    @IsOptional()
-    @IsNumberString()
-    ingreso?: string;
-
-    @IsOptional()
-    @IsNumberString()
-    egreso?: string;
-
-    @IsOptional()
-    idMatricula?: string;
 }

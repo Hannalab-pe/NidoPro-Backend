@@ -19,7 +19,7 @@ export class PadreService {
       nombre: createPadreDto.nombre,
       apellido: createPadreDto.apellido,
       direccion: createPadreDto.direccion,
-      telefono: createPadreDto.telefono,
+      numero: createPadreDto.telefono,
       email: createPadreDto.email,
     });
     return await this.padreRepository.save(newPadre);
@@ -36,7 +36,7 @@ export class PadreService {
     if (!id) {
       throw new Error('ID es requerido');
     }
-    return await this.padreRepository.findOne({ where: { idPadre: id } });
+    return await this.padreRepository.findOne({ where: { idApoderado: id } });
   }
 
   async update(id: string, updatePadreDto: UpdatePadreDto): Promise<Padre> {
@@ -49,7 +49,7 @@ export class PadreService {
     if (updatePadreDto.nombre !== undefined) padreEncontrado.nombre = updatePadreDto.nombre;
     if (updatePadreDto.apellido !== undefined) padreEncontrado.apellido = updatePadreDto.apellido;
     if (updatePadreDto.direccion !== undefined) padreEncontrado.direccion = updatePadreDto.direccion;
-    if (updatePadreDto.telefono !== undefined) padreEncontrado.telefono = updatePadreDto.telefono;
+    if (updatePadreDto.telefono !== undefined) padreEncontrado.numero = updatePadreDto.telefono;
     if (updatePadreDto.email !== undefined) padreEncontrado.email = updatePadreDto.email;
 
     return await this.padreRepository.save(padreEncontrado);

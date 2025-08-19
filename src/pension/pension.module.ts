@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { PensionService } from './pension.service';
 import { PensionController } from './pension.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Pago } from 'src/entities';
+import { Pension } from 'src/entities';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Pago])],
+    imports: [TypeOrmModule.forFeature([Pension])],
     controllers: [PensionController],
     providers: [PensionService],
 })

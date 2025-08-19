@@ -1,39 +1,27 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, Index, OneToMany } from "typeorm";
 import { Estudiante } from "./estudiante.entity";
 import { Trabajador } from "./trabajador.entity";
-import { Rol } from "./rol.entity";
 
 @Index("usuario_pkey", ["idUsuario"], { unique: true })
 @Index("usuario_nom_usuario_key", ["nomUsuario"], { unique: true })
 @Entity("usuario", { schema: "public" })
 export class Usuario {
-  @PrimaryGeneratedColumn('uuid', { name: "id_usuario" })
-  idUsuario: number;
+  @Column("uuid", {
+    primary: true,
+    name: "id_usuario",
+    default: () => "uuid_generate_v4()",
+  })
+  idUsuario: string;
 
   @Column("character varying", {
     name: "nom_usuario",
     unique: true,
-    length: 50,
+    length: 100,
   })
   nomUsuario: string;
 
-  @Column("character varying", { name: "contrasena", length: 255 })
+  @Column("text", { name: "contrasena" })
   contrasena: string;
-
-  @Column("boolean", {
-    name: "esta_activo",
-    nullable: true,
-    default: () => "true",
-  })
-  estaActivo: boolean | null;
 
   @Column("timestamp without time zone", {
     name: "creado",
@@ -49,13 +37,16 @@ export class Usuario {
   })
   actualizado: Date | null;
 
+  @Column("boolean", {
+    name: "esta_activo",
+    nullable: true,
+    default: () => "true",
+  })
+  estaActivo: boolean | null;
+
   @OneToMany(() => Estudiante, (estudiante) => estudiante.idUsuario)
   estudiantes: Estudiante[];
 
   @OneToMany(() => Trabajador, (trabajador) => trabajador.idUsuario)
   trabajadors: Trabajador[];
-
-  @ManyToOne(() => Rol, (rol) => rol.usuarios)
-  @JoinColumn([{ name: "idrol", referencedColumnName: "idrol" }])
-  idrol: Rol;
 }

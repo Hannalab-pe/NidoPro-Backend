@@ -1,36 +1,27 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, Index, OneToMany } from "typeorm";
 import { Matricula } from "./matricula.entity";
-import { Estudiante } from "./estudiante.entity";
 
-@Index("padre_pkey", ["idPadre"], { unique: true })
+@Index("padre_pkey", ["idApoderado"], { unique: true })
 @Entity("padre", { schema: "public" })
 export class Padre {
-  @PrimaryGeneratedColumn('uuid', { name: "id_padre" })
-  idPadre: string;
-
-  @Column("character varying", { name: "nombre", nullable: true, length: 100 })
-  nombre: string | null;
-
-  @Column("character varying", {
-    name: "apellido",
-    nullable: true,
-    length: 100,
+  @Column("uuid", {
+    primary: true,
+    name: "id_apoderado",
+    default: () => "uuid_generate_v4()",
   })
-  apellido: string | null;
+  idApoderado: string;
+
+  @Column("character varying", { name: "nombre", length: 100 })
+  nombre: string;
+
+  @Column("character varying", { name: "apellido", length: 100 })
+  apellido: string;
 
   @Column("text", { name: "direccion", nullable: true })
   direccion: string | null;
 
-  @Column("character varying", { name: "telefono", nullable: true, length: 20 })
-  telefono: string | null;
+  @Column("character varying", { name: "numero", nullable: true, length: 20 })
+  numero: string | null;
 
   @Column("character varying", { name: "email", nullable: true, length: 100 })
   email: string | null;
@@ -49,10 +40,6 @@ export class Padre {
   })
   actualizado: Date | null;
 
-  @OneToMany(() => Matricula, (matricula) => matricula.idPadre)
+  @OneToMany(() => Matricula, (matricula) => matricula.idpadre)
   matriculas: Matricula[];
-
-  @ManyToOne(() => Estudiante, (estudiante) => estudiante.padres)
-  @JoinColumn([{ name: "id_estudiante", referencedColumnName: "idEstudiante" }])
-  idEstudiante: Estudiante;
 }

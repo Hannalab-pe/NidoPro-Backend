@@ -1,20 +1,19 @@
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, Index, OneToMany } from "typeorm";
 import { Aula } from "./aula.entity";
+import { Matricula } from "./matricula.entity";
 
-@Index("grado_pkey", ["idGrado"], { unique: true })
+@Index("grado_pkey", ["idgrado"], { unique: true })
 @Entity("grado", { schema: "public" })
 export class Grado {
-  @PrimaryGeneratedColumn('uuid', { name: "id_grado" })
-  idGrado: number;
+  @Column("uuid", {
+    primary: true,
+    name: "idgrado",
+    default: () => "uuid_generate_v4()",
+  })
+  idgrado: string;
 
-  @Column("integer", { name: "nro_grado", nullable: true })
-  nroGrado: number | null;
+  @Column("character varying", { name: "nrogrado", nullable: true, length: 50 })
+  nrogrado: string | null;
 
   @Column("text", { name: "descripcion", nullable: true })
   descripcion: string | null;
@@ -41,4 +40,7 @@ export class Grado {
 
   @OneToMany(() => Aula, (aula) => aula.idGrado)
   aulas: Aula[];
+
+  @OneToMany(() => Matricula, (matricula) => matricula.idgrado)
+  matriculas: Matricula[];
 }

@@ -1,24 +1,24 @@
-import {
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { Actividad } from "./actividad.entity";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { Actividades } from "./actividades.entity";
 import { Trabajador } from "./trabajador.entity";
 
 @Index("cronograma_pkey", ["idCronograma"], { unique: true })
 @Entity("cronograma", { schema: "public" })
 export class Cronograma {
-  @PrimaryGeneratedColumn('uuid', { name: "id_cronograma" })
+  @Column("uuid", {
+    primary: true,
+    name: "id_cronograma",
+    default: () => "uuid_generate_v4()",
+  })
   idCronograma: string;
 
-  @ManyToOne(() => Actividad, (actividad) => actividad.cronogramas)
-  @JoinColumn([{ name: "id_actividad", referencedColumnName: "idActividad" }])
-  idActividad: Actividad;
+  @ManyToOne(() => Actividades, (actividades) => actividades.cronogramas)
+  @JoinColumn([
+    { name: "id_actividades", referencedColumnName: "idActividades" },
+  ])
+  idActividades: Actividades;
 
   @ManyToOne(() => Trabajador, (trabajador) => trabajador.cronogramas)
-  @JoinColumn([{ name: "id_trabajador", referencedColumnName: "idTrabajador" }])
+  @JoinColumn([{ name: "id_trabajador", referencedColumnName: "idtrabajador" }])
   idTrabajador: Trabajador;
 }

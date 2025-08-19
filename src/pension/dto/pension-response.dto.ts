@@ -2,23 +2,14 @@ import { Expose } from 'class-transformer';
 
 export class PensionResponseDto {
     @Expose()
-    idPago: string;
+    idpension: string;
 
     @Expose()
-    tipoPago?: string;
-
-    @Expose()
-    monto?: string;
+    montoPension?: string;
 
     @Expose()
     fechaEmision?: string;
 
     @Expose()
     fechaPago?: string;
-
-    @Expose()
-    ingreso?: string;
-
-    @Expose()
-    egreso?: string;
 }
