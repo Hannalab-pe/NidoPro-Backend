@@ -16,12 +16,12 @@ export class UsersService {
     private personRepository: Repository<Person>,
     @InjectRepository(Role)
     private roleRepository: Repository<Role>,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     // Verificar si el username ya existe
     const existingUser = await this.userRepository.findOne({
-      where: { username: createUserDto.username }
+      where: { usuario: createUserDto.username }
     });
     if (existingUser) {
       throw new ConflictException('El nombre de usuario ya existe');
@@ -73,9 +73,9 @@ export class UsersService {
 
     // Crear el usuario
     const user = this.userRepository.create({
-      personId: savedPerson.id,
+      trabajadorId: savedPerson.id,
       roleId: createUserDto.roleId,
-      username: createUserDto.username,
+      usuario: createUserDto.username,
       email: createUserDto.email,
       passwordHash: hashedPassword,
     });
@@ -91,12 +91,12 @@ export class UsersService {
       relations: ['person', 'role'],
       select: {
         id: true,
-        username: true,
+        usuario: true,
         email: true,
         isActive: true,
         lastLogin: true,
         createdAt: true,
-        person: {
+        trabajador: {
           firstName: true,
           lastName: true,
           email: true,
@@ -117,13 +117,13 @@ export class UsersService {
       relations: ['person', 'role'],
       select: {
         id: true,
-        username: true,
+        usuario: true,
         email: true,
         isActive: true,
         lastLogin: true,
         createdAt: true,
-        person: {
-          id: true,
+        trabajador: {
+          idTrabajador: true,
           firstName: true,
           lastName: true,
           email: true,
@@ -155,9 +155,9 @@ export class UsersService {
     const user = await this.findOne(id);
 
     // Verificar username único si se está actualizando
-    if (updateUserDto.username && updateUserDto.username !== user.username) {
+    if (updateUserDto.username && updateUserDto.username !== user.usuario) {
       const existingUser = await this.userRepository.findOne({
-        where: { username: updateUserDto.username }
+        where: { usuario: updateUserDto.username }
       });
       if (existingUser) {
         throw new ConflictException('El nombre de usuario ya existe');
@@ -176,7 +176,7 @@ export class UsersService {
 
     // Actualizar datos de la persona
     if (updateUserDto.firstName || updateUserDto.lastName || updateUserDto.phone || updateUserDto.address) {
-      await this.personRepository.update(user.person.id, {
+      await this.personRepository.update(user.trabajador.idTrabajador, {
         firstName: updateUserDto.firstName,
         lastName: updateUserDto.lastName,
         phone: updateUserDto.phone,
@@ -189,7 +189,7 @@ export class UsersService {
 
     // Actualizar datos del usuario
     await this.userRepository.update(id, {
-      username: updateUserDto.username,
+      usuario: updateUserDto.username,
       email: updateUserDto.email,
       roleId: updateUserDto.roleId,
     });
@@ -199,10 +199,10 @@ export class UsersService {
 
   async remove(id: number) {
     const user = await this.findOne(id);
-    
+
     // Soft delete - marcar como inactivo en lugar de eliminar
     await this.userRepository.update(id, { isActive: false });
-    await this.personRepository.update(user.person.id, { isActive: false });
+    await this.personRepository.update(user.trabajador.idTrabajador, { isActive: false });
 
     return { message: 'Usuario desactivado correctamente' };
   }
@@ -210,15 +210,15 @@ export class UsersService {
   async findByRole(roleName: string) {
     return this.userRepository.find({
       relations: ['person', 'role'],
-      where: { 
+      where: {
         role: { name: roleName },
-        isActive: true 
+        isActive: true
       },
       select: {
         id: true,
-        username: true,
+        usuario: true,
         email: true,
-        person: {
+        trabajador: {
           firstName: true,
           lastName: true,
           email: true,

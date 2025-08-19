@@ -1,62 +1,83 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, OneToMany } from 'typeorm';
-import { Usuario } from './usuario.entity';
-import { Estudiante } from './estudiante.entity';
-import { PadresEstudiantes } from './padre_Estudiante.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Anotacion } from "./anotacion.entity";
+import { Aula } from "./aula.entity";
+import { Cronograma } from "./cronograma.entity";
+import { Curso } from "./curso.entity";
+import { Informe } from "./informe.entity";
+import { Usuario } from "./usuario.entity";
 
-@Entity('trabajador')
+@Index("trabajador_pkey", ["idTrabajador"], { unique: true })
+@Index("trabajador_nro_documento_key", ["nroDocumento"], { unique: true })
+@Entity("trabajador", { schema: "public" })
 export class Trabajador {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({ type: "integer", name: "id_trabajador" })
+  idTrabajador: number;
 
-  @Column({ name: 'first_name', type: 'varchar', length: 100 })
-  firstName: string;
+  @Column("character varying", { name: "nombre", nullable: true, length: 100 })
+  nombre: string | null;
 
-  @Column({ name: 'last_name', type: 'varchar', length: 100 })
-  lastName: string;
+  @Column("character varying", {
+    name: "apellido",
+    nullable: true,
+    length: 100,
+  })
+  apellido: string | null;
 
-  @Column({ name: 'document_type', type: 'varchar', length: 20, default: 'DNI' })
-  documentType: string;
+  @Column("character varying", {
+    name: "tipo_documento",
+    nullable: true,
+    length: 20,
+  })
+  tipoDocumento: string | null;
 
-  @Column({ name: 'document_number', type: 'varchar', length: 20, unique: true })
-  documentNumber: string;
+  @Column("character varying", {
+    name: "nro_documento",
+    nullable: true,
+    unique: true,
+    length: 20,
+  })
+  nroDocumento: string | null;
 
-  @Column({ name: 'birth_date', type: 'date', nullable: true })
-  birthDate: Date;
+  @Column("text", { name: "direccion", nullable: true })
+  direccion: string | null;
 
-  @Column({ type: 'varchar', length: 10, nullable: true })
-  gender: 'M' | 'F' | 'Otro';
+  @Column("character varying", { name: "email", nullable: true, length: 100 })
+  email: string | null;
 
-  @Column({ type: 'varchar', length: 20, nullable: true })
-  phone: string;
+  @Column("character varying", { name: "telefono", nullable: true, length: 20 })
+  telefono: string | null;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
-  email: string;
+  @Column("boolean", {
+    name: "is_active",
+    nullable: true,
+    default: () => "true",
+  })
+  isActive: boolean | null;
 
-  @Column({ type: 'text', nullable: true })
-  address: string;
+  @OneToMany(() => Anotacion, (anotacion) => anotacion.idTrabajador)
+  anotacions: Anotacion[];
 
-  @Column({ name: 'emergency_contact', type: 'varchar', length: 100, nullable: true })
-  emergencyContact: string;
+  @OneToMany(() => Aula, (aula) => aula.idTrabajador)
+  aulas: Aula[];
 
-  @Column({ name: 'emergency_phone', type: 'varchar', length: 20, nullable: true })
-  emergencyPhone: string;
+  @OneToMany(() => Cronograma, (cronograma) => cronograma.idTrabajador)
+  cronogramas: Cronograma[];
 
-  @Column({ name: 'is_active', type: 'boolean', default: true })
-  isActive: boolean;
+  @OneToMany(() => Curso, (curso) => curso.idTrabajador)
+  cursos: Curso[];
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @OneToMany(() => Informe, (informe) => informe.idTrabajador)
+  informes: Informe[];
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  // Relaciones
-  @OneToOne(() => Usuario, user => user.person)
-  user: Usuario;
-
-  @OneToOne(() => Estudiante, student => student.person)
-  student: Estudiante;
-
-  @OneToMany(() => PadresEstudiantes, parentStudent => parentStudent.parent)
-  children: PadresEstudiantes[];
+  @ManyToOne(() => Usuario, (usuario) => usuario.trabajadors)
+  @JoinColumn([{ name: "id_usuario", referencedColumnName: "idUsuario" }])
+  idUsuario: Usuario;
 }

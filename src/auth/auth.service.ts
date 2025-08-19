@@ -15,11 +15,11 @@ export class AuthService {
     @InjectRepository(Person)
     private personRepository: Repository<Person>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userRepository.findOne({
-      where: { username, isActive: true },
+      where: { usuario: username, isActive: true },
       relations: ['person', 'role'],
     });
 
@@ -33,21 +33,21 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const user = await this.validateUser(loginDto.username, loginDto.password);
-    
+
     if (!user) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    const payload = { 
-      username: user.username, 
-      sub: user.id, 
+    const payload = {
+      username: user.username,
+      sub: user.id,
       role: user.role.name,
       personId: user.personId
     };
 
     // Actualizar última conexión
-    await this.userRepository.update(user.id, { 
-      lastLogin: new Date() 
+    await this.userRepository.update(user.id, {
+      lastLogin: new Date()
     });
 
     return {
@@ -72,10 +72,10 @@ export class AuthService {
       relations: ['person', 'role'],
       select: {
         id: true,
-        username: true,
+        usuario: true,
         email: true,
         lastLogin: true,
-        person: {
+        trabajador: {
           firstName: true,
           lastName: true,
           email: true,

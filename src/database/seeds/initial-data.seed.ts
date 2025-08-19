@@ -83,10 +83,10 @@ export async function seedInitialData(dataSource: DataSource) {
     // 4. Crear usuario administrador inicial
     console.log('👤 Creando usuario administrador...');
     const adminRole = await roleRepository.findOne({ where: { name: 'admin' } });
-    
+
     if (adminRole) {
-      const existingAdmin = await userRepository.findOne({ where: { username: 'admin' } });
-      
+      const existingAdmin = await userRepository.findOne({ where: { usuario: 'admin' } });
+
       if (!existingAdmin) {
         // Crear persona para el admin
         const adminPerson = personRepository.create({
@@ -102,14 +102,14 @@ export async function seedInitialData(dataSource: DataSource) {
         // Crear usuario admin
         const hashedPassword = await bcrypt.hash('admin123', 10);
         const adminUser = userRepository.create({
-          personId: adminPerson.id,
+          trabajadorId: adminPerson.idTrabajador,
           roleId: adminRole.id,
-          username: 'admin',
+          usuario: 'admin',
           email: 'admin@nidopro.com',
           passwordHash: hashedPassword,
         });
         await userRepository.save(adminUser);
-        
+
         console.log('✅ Usuario administrador creado');
         console.log('📧 Email: admin@nidopro.com');
         console.log('🔑 Usuario: admin');
@@ -120,7 +120,7 @@ export async function seedInitialData(dataSource: DataSource) {
     }
 
     console.log('🎉 Seeds completados exitosamente!');
-    
+
   } catch (error) {
     console.error('❌ Error en seeds:', error);
     throw error;

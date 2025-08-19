@@ -1,33 +1,44 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Estudiante } from './estudiante.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Aula } from "./aula.entity";
 
-@Entity('grado')
+@Index("grado_pkey", ["idGrado"], { unique: true })
+@Entity("grado", { schema: "public" })
 export class Grado {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({ type: "integer", name: "id_grado" })
+  idGrado: number;
 
-  @Column({ type: 'varchar', length: 50, unique: true })
-  name: string;
+  @Column("integer", { name: "nro_grado", nullable: true })
+  nroGrado: number | null;
 
-  @Column({ type: 'varchar', length: 20 })
-  level: string; // 'inicial', 'primaria', 'secundaria'
+  @Column("text", { name: "descripcion", nullable: true })
+  descripcion: string | null;
 
-  @Column({ name: 'age_group', type: 'varchar', length: 20, nullable: true })
-  ageGroup: string; // '3 años', '4 años', '5 años'
+  @Column("character varying", { name: "seccion", nullable: true, length: 10 })
+  seccion: string | null;
 
-  @Column({ type: 'text', nullable: true })
-  description: string;
+  @Column("integer", { name: "capacidad", nullable: true })
+  capacidad: number | null;
 
-  @Column({ name: 'is_active', type: 'boolean', default: true })
-  isActive: boolean;
+  @Column("timestamp without time zone", {
+    name: "creado",
+    nullable: true,
+    default: () => "now()",
+  })
+  creado: Date | null;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @Column("timestamp without time zone", {
+    name: "actualizado",
+    nullable: true,
+    default: () => "now()",
+  })
+  actualizado: Date | null;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  // Relaciones
-  @OneToMany(() => Estudiante, student => student.grade)
-  students: Estudiante[];
+  @OneToMany(() => Aula, (aula) => aula.idGrado)
+  aulas: Aula[];
 }

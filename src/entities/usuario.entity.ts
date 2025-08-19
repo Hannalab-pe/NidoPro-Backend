@@ -1,45 +1,61 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
-import { Trabajador } from './trabajador.entity';
-import { Roles } from './roles.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Estudiante } from "./estudiante.entity";
+import { Trabajador } from "./trabajador.entity";
+import { Rol } from "./rol.entity";
 
-@Entity('users')
+@Index("usuario_pkey", ["idUsuario"], { unique: true })
+@Index("usuario_nom_usuario_key", ["nomUsuario"], { unique: true })
+@Entity("usuario", { schema: "public" })
 export class Usuario {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({ type: "integer", name: "id_usuario" })
+  idUsuario: number;
 
-  @Column({ name: 'person_id' })
-  personId: number;
+  @Column("character varying", {
+    name: "nom_usuario",
+    unique: true,
+    length: 50,
+  })
+  nomUsuario: string;
 
-  @Column({ name: 'role_id' })
-  roleId: number;
+  @Column("character varying", { name: "contrasena", length: 255 })
+  contrasena: string;
 
-  @Column({ type: 'varchar', length: 50, unique: true })
-  username: string;
+  @Column("boolean", {
+    name: "esta_activo",
+    nullable: true,
+    default: () => "true",
+  })
+  estaActivo: boolean | null;
 
-  @Column({ name: 'password_hash', type: 'varchar', length: 255 })
-  passwordHash: string;
+  @Column("timestamp without time zone", {
+    name: "creado",
+    nullable: true,
+    default: () => "now()",
+  })
+  creado: Date | null;
 
-  @Column({ type: 'varchar', length: 100, unique: true })
-  email: string;
+  @Column("timestamp without time zone", {
+    name: "actualizado",
+    nullable: true,
+    default: () => "now()",
+  })
+  actualizado: Date | null;
 
-  @Column({ name: 'last_login', type: 'timestamp', nullable: true })
-  lastLogin: Date;
+  @OneToMany(() => Estudiante, (estudiante) => estudiante.idUsuario)
+  estudiantes: Estudiante[];
 
-  @Column({ name: 'is_active', type: 'boolean', default: true })
-  isActive: boolean;
+  @OneToMany(() => Trabajador, (trabajador) => trabajador.idUsuario)
+  trabajadors: Trabajador[];
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  // Relaciones
-  @OneToOne(() => Trabajador, person => person.user)
-  @JoinColumn({ name: 'person_id' })
-  person: Trabajador;
-
-  @ManyToOne(() => Roles, role => role.users)
-  @JoinColumn({ name: 'role_id' })
-  role: Roles;
+  @ManyToOne(() => Rol, (rol) => rol.usuarios)
+  @JoinColumn([{ name: "idrol", referencedColumnName: "idrol" }])
+  idrol: Rol;
 }

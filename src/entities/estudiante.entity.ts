@@ -1,53 +1,88 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { Trabajador } from './trabajador.entity';
-import { Grado } from './grado.entity';
-import { PadresEstudiantes } from './padre_Estudiante.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Anotacion } from "./anotacion.entity";
+import { Asistencia } from "./asistencia.entity";
+import { Usuario } from "./usuario.entity";
+import { Informe } from "./informe.entity";
+import { Matricula } from "./matricula.entity";
+import { Notas } from "./notas.entity";
+import { Padre } from "./padre.entity";
 
-@Entity('estudiante')
+@Index("estudiante_pkey", ["idEstudiante"], { unique: true })
+@Index("estudiante_nro_documento_key", ["nroDocumento"], { unique: true })
+@Entity("estudiante", { schema: "public" })
 export class Estudiante {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn({ type: "integer", name: "id_estudiante" })
+  idEstudiante: number;
 
-  @Column({ name: 'person_id' })
-  personId: number;
+  @Column("character varying", { name: "nombre", nullable: true, length: 100 })
+  nombre: string | null;
 
-  @Column({ name: 'grade_id' })
-  gradeId: number;
-
-  @Column({ name: 'student_code', type: 'varchar', length: 20, unique: true, nullable: true })
-  studentCode: string;
-
-  @Column({ name: 'enrollment_date', type: 'date', default: () => 'CURRENT_DATE' })
-  enrollmentDate: Date;
-
-  @Column({
-    type: 'varchar',
-    length: 20,
-    default: 'active'
+  @Column("character varying", {
+    name: "apellido",
+    nullable: true,
+    length: 100,
   })
-  status: 'active' | 'inactive' | 'transferred' | 'graduated';
+  apellido: string | null;
 
-  @Column({ name: 'academic_year', type: 'integer', default: () => 'EXTRACT(YEAR FROM CURRENT_DATE)' })
-  academicYear: number;
+  @Column("character varying", {
+    name: "contacto_emergencia",
+    nullable: true,
+    length: 100,
+  })
+  contactoEmergencia: string | null;
 
-  @Column({ type: 'text', nullable: true })
-  observations: string;
+  @Column("character varying", {
+    name: "nro_emergencia",
+    nullable: true,
+    length: 20,
+  })
+  nroEmergencia: string | null;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @Column("character varying", {
+    name: "tipo_documento",
+    nullable: true,
+    length: 20,
+  })
+  tipoDocumento: string | null;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @Column("character varying", {
+    name: "nro_documento",
+    nullable: true,
+    unique: true,
+    length: 20,
+  })
+  nroDocumento: string | null;
 
-  // Relaciones
-  @OneToOne(() => Trabajador, person => person.student)
-  @JoinColumn({ name: 'person_id' })
-  person: Trabajador;
+  @Column("text", { name: "observaciones", nullable: true })
+  observaciones: string | null;
 
-  @ManyToOne(() => Grado, grade => grade.students)
-  @JoinColumn({ name: 'grade_id' })
-  grade: Grado;
+  @OneToMany(() => Anotacion, (anotacion) => anotacion.idEstudiante)
+  anotacions: Anotacion[];
 
-  @OneToMany(() => PadresEstudiantes, parentStudent => parentStudent.student)
-  parents: PadresEstudiantes[];
+  @OneToMany(() => Asistencia, (asistencia) => asistencia.idEstudiante)
+  asistencias: Asistencia[];
+
+  @ManyToOne(() => Usuario, (usuario) => usuario.estudiantes)
+  @JoinColumn([{ name: "id_usuario", referencedColumnName: "idUsuario" }])
+  idUsuario: Usuario;
+
+  @OneToMany(() => Informe, (informe) => informe.idEstudiante)
+  informes: Informe[];
+
+  @OneToMany(() => Matricula, (matricula) => matricula.idEstudiante)
+  matriculas: Matricula[];
+
+  @OneToMany(() => Notas, (notas) => notas.idEstudiante)
+  notas: Notas[];
+
+  @OneToMany(() => Padre, (padre) => padre.idEstudiante)
+  padres: Padre[];
 }

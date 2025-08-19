@@ -18,7 +18,7 @@ export class StudentsService {
     @InjectRepository(ParentStudent)
     private parentStudentRepository: Repository<ParentStudent>,
     private dataSource: DataSource,
-  ) {}
+  ) { }
 
   async create(createStudentDto: CreateStudentDto) {
     // Verificar si el documento ya existe
@@ -66,7 +66,7 @@ export class StudentsService {
 
       // 3. Crear el estudiante
       const student = manager.create(Student, {
-        personId: savedStudentPerson.id,
+        personId: savedStudentPerson.idTrabajador,
         gradeId: createStudentDto.gradeId,
         studentCode,
         enrollmentDate: createStudentDto.enrollmentDate || new Date(),
@@ -100,7 +100,7 @@ export class StudentsService {
 
         // Crear relación padre-estudiante
         const parentStudent = manager.create(ParentStudent, {
-          parentId: parentPerson.id,
+          parentId: parentPerson.idTrabajador,
           studentId: savedStudent.id,
           relationshipType: parentInfo.relationshipType,
           isPrimaryContact: parentInfo.isPrimaryContact,
@@ -140,9 +140,9 @@ export class StudentsService {
     const student = await this.studentRepository.findOne({
       where: { id },
       relations: [
-        'person', 
-        'grade', 
-        'parents', 
+        'person',
+        'grade',
+        'parents',
         'parents.parent'
       ]
     });
@@ -209,7 +209,7 @@ export class StudentsService {
 
   async remove(id: number) {
     const student = await this.findOne(id);
-    
+
     // Soft delete
     await this.studentRepository.update(id, { status: 'inactive' });
     await this.personRepository.update(student.person.id, { isActive: false });
@@ -219,13 +219,13 @@ export class StudentsService {
 
   async findByGrade(gradeId: number) {
     return this.studentRepository.find({
-      where: { 
-        gradeId, 
-        status: 'active' 
+      where: {
+        gradeId,
+        status: 'active'
       },
       relations: ['person', 'grade'],
-      order: { 
-        person: { firstName: 'ASC' } 
+      order: {
+        person: { firstName: 'ASC' }
       }
     });
   }
@@ -240,7 +240,7 @@ export class StudentsService {
     }
 
     const parentStudents = await this.parentStudentRepository.find({
-      where: { parentId: parent.id },
+      where: { parentId: parent.idTrabajador },
       relations: ['student', 'student.person', 'student.grade']
     });
 
