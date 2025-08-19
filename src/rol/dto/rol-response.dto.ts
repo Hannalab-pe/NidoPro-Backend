@@ -1,18 +1,18 @@
 import { Expose } from 'class-transformer';
 
 export class RolResponseDto {
-  @Expose()
-  idrol: number;
+    @Expose()
+    idrol: string;
 
-  @Expose()
-  nombre: string;
+    @Expose()
+    nombre: string;
 
-  @Expose()
-  descripcion?: string;
+    @Expose()
+    descripcion?: string;
 
-  @Expose()
-  creado: Date;
+    @Expose()
+    creado: Date;
 
-  @Expose()
-  actualizado: Date;
+    @Expose()
+    actualizado: Date;
 }

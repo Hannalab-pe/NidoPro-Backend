@@ -19,12 +19,12 @@ export class RolController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.rolService.findOne(+id);
+    return this.rolService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRolDto: UpdateRolDto) {
-    return this.rolService.update(+id, updateRolDto);
+    return this.rolService.update(id, updateRolDto);
   }
 
   @Delete(':id')

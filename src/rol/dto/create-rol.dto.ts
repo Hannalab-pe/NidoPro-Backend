@@ -8,4 +8,7 @@ export class CreateRolDto {
     @IsOptional()
     @IsString()
     descripcion?: string;
+
+    @IsOptional()
+    isActive?: boolean;
 }

@@ -19,6 +19,9 @@ export class Rol {
   @Column("text", { name: "descripcion", nullable: true })
   descripcion: string | null;
 
+  @Column({name: "isActive"})
+  isActive: boolean;
+
   @Column("timestamp without time zone", {
     name: "creado",
     nullable: true,
