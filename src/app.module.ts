@@ -15,7 +15,7 @@ import { SubjectsModule } from './subjects/subjects.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    
+
     // Configuración de TypeORM
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -28,7 +28,7 @@ import { SubjectsModule } from './subjects/subjects.module';
       synchronize: process.env.NODE_ENV === 'development', // Solo en desarrollo
       logging: process.env.NODE_ENV === 'development', // Logs en desarrollo
     }),
-    
+
     // Módulos de la aplicación
     AuthModule,
     UsersModule,
@@ -39,4 +39,4 @@ import { SubjectsModule } from './subjects/subjects.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
