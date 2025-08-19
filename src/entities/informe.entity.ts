@@ -12,8 +12,8 @@ import { Trabajador } from "./trabajador.entity";
 @Index("informe_pkey", ["idInforme"], { unique: true })
 @Entity("informe", { schema: "public" })
 export class Informe {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_informe" })
-  idInforme: number;
+  @PrimaryGeneratedColumn('uuid', { name: "id_informe" })
+  idInforme: string;
 
   @Column("text", { name: "detalle", nullable: true })
   detalle: string | null;

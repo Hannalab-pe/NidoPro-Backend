@@ -11,8 +11,8 @@ import { Trabajador } from "./trabajador.entity";
 @Index("cronograma_pkey", ["idCronograma"], { unique: true })
 @Entity("cronograma", { schema: "public" })
 export class Cronograma {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_cronograma" })
-  idCronograma: number;
+  @PrimaryGeneratedColumn('uuid', { name: "id_cronograma" })
+  idCronograma: string;
 
   @ManyToOne(() => Actividad, (actividad) => actividad.cronogramas)
   @JoinColumn([{ name: "id_actividad", referencedColumnName: "idActividad" }])

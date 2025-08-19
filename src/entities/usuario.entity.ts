@@ -15,7 +15,7 @@ import { Rol } from "./rol.entity";
 @Index("usuario_nom_usuario_key", ["nomUsuario"], { unique: true })
 @Entity("usuario", { schema: "public" })
 export class Usuario {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_usuario" })
+  @PrimaryGeneratedColumn('uuid', { name: "id_usuario" })
   idUsuario: number;
 
   @Column("character varying", {

@@ -10,7 +10,7 @@ import { Aula } from "./aula.entity";
 @Index("grado_pkey", ["idGrado"], { unique: true })
 @Entity("grado", { schema: "public" })
 export class Grado {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_grado" })
+  @PrimaryGeneratedColumn('uuid', { name: "id_grado" })
   idGrado: number;
 
   @Column("integer", { name: "nro_grado", nullable: true })

@@ -13,7 +13,7 @@ import { Estudiante } from "./estudiante.entity";
 @Index("padre_pkey", ["idPadre"], { unique: true })
 @Entity("padre", { schema: "public" })
 export class Padre {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_padre" })
+  @PrimaryGeneratedColumn('uuid', { name: "id_padre" })
   idPadre: number;
 
   @Column("character varying", { name: "nombre", nullable: true, length: 100 })

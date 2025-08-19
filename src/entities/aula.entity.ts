@@ -16,8 +16,8 @@ import { Matricula } from "./matricula.entity";
 @Index("aula_pkey", ["idAula"], { unique: true })
 @Entity("aula", { schema: "public" })
 export class Aula {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_aula" })
-  idAula: number;
+  @PrimaryGeneratedColumn('uuid', { name: "id_aula" })
+  idAula: string;
 
   @OneToMany(() => Actividad, (actividad) => actividad.idAula)
   actividads: Actividad[];

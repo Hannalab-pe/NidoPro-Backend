@@ -18,8 +18,8 @@ import { Usuario } from "./usuario.entity";
 @Index("trabajador_nro_documento_key", ["nroDocumento"], { unique: true })
 @Entity("trabajador", { schema: "public" })
 export class Trabajador {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_trabajador" })
-  idTrabajador: number;
+  @PrimaryGeneratedColumn('uuid',{ name: "id_trabajador" })
+  idTrabajador: string;
 
   @Column("character varying", { name: "nombre", nullable: true, length: 100 })
   nombre: string | null;

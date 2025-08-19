@@ -10,8 +10,8 @@ import { Usuario } from "./usuario.entity";
 @Index("rol_pkey", ["idrol"], { unique: true })
 @Entity("rol", { schema: "public" })
 export class Rol {
-  @PrimaryGeneratedColumn({ type: "integer", name: "idrol" })
-  idrol: number;
+  @PrimaryGeneratedColumn('uuid',{ name: "idrol" })
+  idrol: string;
 
   @Column("character varying", { name: "nombre", length: 50 })
   nombre: string;

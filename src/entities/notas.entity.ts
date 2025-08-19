@@ -13,8 +13,8 @@ import { Evaluacion } from "./evaluacion.entity";
 @Index("notas_pkey", ["idNota"], { unique: true })
 @Entity("notas", { schema: "public" })
 export class Notas {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_nota" })
-  idNota: number;
+  @PrimaryGeneratedColumn('uuid',{ name: "id_nota" })
+  idNota: string;
 
   @Column("numeric", {
     name: "puntaje",

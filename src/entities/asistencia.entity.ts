@@ -12,8 +12,8 @@ import { Estudiante } from "./estudiante.entity";
 @Index("asistencia_pkey", ["idAsistencia"], { unique: true })
 @Entity("asistencia", { schema: "public" })
 export class Asistencia {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_asistencia" })
-  idAsistencia: number;
+  @PrimaryGeneratedColumn('uuid', { name: "id_asistencia" })
+  idAsistencia: string;
 
   @Column("date", { name: "fecha", nullable: true })
   fecha: string | null;

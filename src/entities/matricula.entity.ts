@@ -15,7 +15,7 @@ import { Pago } from "./pago.entity";
 @Index("matricula_pkey", ["idMatricula"], { unique: true })
 @Entity("matricula", { schema: "public" })
 export class Matricula {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_matricula" })
+  @PrimaryGeneratedColumn('uuid', { name: "id_matricula" })
   idMatricula: number;
 
   @Column("numeric", {

@@ -13,7 +13,7 @@ import { Notas } from "./notas.entity";
 @Index("evaluacion_pkey", ["idEvaluacion"], { unique: true })
 @Entity("evaluacion", { schema: "public" })
 export class Evaluacion {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_evaluacion" })
+  @PrimaryGeneratedColumn('uuid',{ name: "id_evaluacion" })
   idEvaluacion: number;
 
   @Column("text", { name: "descripcion", nullable: true })

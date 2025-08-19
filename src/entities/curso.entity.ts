@@ -15,7 +15,7 @@ import { Notas } from "./notas.entity";
 @Index("curso_pkey", ["idCurso"], { unique: true })
 @Entity("curso", { schema: "public" })
 export class Curso {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_curso" })
+  @PrimaryGeneratedColumn('uuid', { name: "id_curso" })
   idCurso: number;
 
   @Column("character varying", { name: "nombre", nullable: true, length: 100 })

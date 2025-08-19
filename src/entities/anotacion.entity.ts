@@ -13,8 +13,8 @@ import { Trabajador } from "./trabajador.entity";
 @Index("anotacion_pkey", ["idAnotacion"], { unique: true })
 @Entity("anotacion", { schema: "public" })
 export class Anotacion {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_anotacion" })
-  idAnotacion: number;
+  @PrimaryGeneratedColumn('uuid',{ name: "id_anotacion" })
+  idAnotacion: string;
 
   @Column("text", { name: "descripcion", nullable: true })
   descripcion: string | null;

@@ -13,8 +13,8 @@ import { Cronograma } from "./cronograma.entity";
 @Index("actividad_pkey", ["idActividad"], { unique: true })
 @Entity("actividad", { schema: "public" })
 export class Actividad {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id_actividad" })
-  idActividad: number;
+  @PrimaryGeneratedColumn('uuid', { name: "id_actividad" })
+  idActividad: string;
 
   @Column("character varying", { name: "nombre", nullable: true, length: 100 })
   nombre: string | null;
