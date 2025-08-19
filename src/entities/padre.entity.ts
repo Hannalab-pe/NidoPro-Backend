@@ -14,7 +14,7 @@ import { Estudiante } from "./estudiante.entity";
 @Entity("padre", { schema: "public" })
 export class Padre {
   @PrimaryGeneratedColumn('uuid', { name: "id_padre" })
-  idPadre: number;
+  idPadre: string;
 
   @Column("character varying", { name: "nombre", nullable: true, length: 100 })
   nombre: string | null;
